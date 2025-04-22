@@ -73,10 +73,13 @@ def add_task(task_to_add:str):
 
 def mark_as_done(task_done:str):
     task_array = get_task_array_and_convert_to_int(task_done)
-    status[task_array] = True
-    get_specific_task(task_array)
-    sleep_and_space(200000000)
-
+    
+    try:
+        status[task_array] = True
+        get_specific_task(task_array)
+        sleep_and_space(200000000)
+    except:
+        print("deine nummer konnte nicht gefunden werden bitte gib eine gültige nummer ein")
 
 def delete_task(task_delete:str):
     get_all_tasks()
