@@ -32,8 +32,7 @@ status = []
 def define_action(action:str):
     print(actions)
     user_input = input("bitte wähle einer der oben genannten aktionen: ")
-    
-    return user_input
+    return user_input #ich will den input in die nächste funktion mitgeben desshalb den return
 
 def validate_input_and_choose_action(action:str):
     match action:
@@ -43,9 +42,12 @@ def validate_input_and_choose_action(action:str):
             get_all_tasks()
         case "m":
             get_all_tasks()
-            mark_as_done(input("Welche nummer willst du als erledigt markieren: "))
+            global mark_is_not_valid
+            mark_is_not_valid = True
+            while mark_is_not_valid:
+                mark_as_done(input("Welche nummer willst du als erledigt markieren: "))
         case "l":
-            get_all_tasks
+            get_all_tasks()
             delete_task(input("welche Nummer willst du löschen: "))
         case "b":
             set_run_todo_app_false()
@@ -56,57 +58,54 @@ def get_all_tasks():
     counter = 0
     if len(descriptions) and len(status):
         for i in descriptions:
-            counter+=1
-            print(f"Aufgabe {counter}: {descriptions[counter -1]} erledigt: {status[counter-1]} ")
-        sleep_and_space(200000000)
-
+            counter += 1
+            print(f"Aufgabe {counter}: {descriptions[counter - 1]} erledigt: {status[counter - 1]}")
+        helper_sleep_and_space()
 
 def get_specific_task(specific_task:int):
-                print(f"Aufgabe {specific_task + 1}: {descriptions[specific_task]} erledigt: {status[specific_task-1]} ")
-                sleep_and_space(200000000)
+    print(f"Aufgabe {specific_task + 1}: {descriptions[specific_task]} erledigt: {status[specific_task - 1]}")
+    helper_sleep_and_space()
 
-
-            
 def add_task(task_to_add:str):
     descriptions.append(task_to_add)
     status.append(False)
 
 def mark_as_done(task_done:str):
-    task_array = get_task_array_and_convert_to_int(task_done)
-    
+    task_array = helper_get_task_array_and_convert_to_int(task_done)
     try:
         status[task_array] = True
         get_specific_task(task_array)
-        sleep_and_space(200000000)
+        global mark_is_not_valid
+        mark_is_not_valid = False
     except:
-        print("deine nummer konnte nicht gefunden werden bitte gib eine gültige nummer ein")
+            print("deine nummer konnte nicht gefunden werden bitte gib eine gültige nummer ein")
 
 def delete_task(task_delete:str):
     get_all_tasks()
-    task_array = get_task_array_and_convert_to_int(task_delete)
+    task_array = helper_get_task_array_and_convert_to_int(task_delete)
     del status[task_array]
     del descriptions[task_array]
     print("succesfully deleted")
-    sleep_and_space(200000000)
+    helper_sleep_and_space()
 
-
-def set_run_todo_app_false():
+def set_run_todo_app_false(): 
     global run_todo_app
     run_todo_app = False
     return run_todo_app
 
-def get_task_array_and_convert_to_int(task_done:str):
+def helper_get_task_array_and_convert_to_int(task_done:str): #weil so oft der Input konvertiert werden muss habe ich eine helper function darraus gemacht
     try:
         task_id = int(task_done)
         task_array = task_id - 1
         return task_array
     except:
-        print("please enter a valud number")
+        print("Bitte gib eine gültige nummer ein")
 
-def sleep_and_space(time:int):
+def helper_sleep_and_space():
     print('\n')
-    for i in range(time):
-        time = 0   
+    for i in range(200000000):
+        time = 0
+
 if __name__ == "__main__":
     run_todo_app = True
     while run_todo_app:
